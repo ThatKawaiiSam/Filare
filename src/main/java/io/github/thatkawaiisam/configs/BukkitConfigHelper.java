@@ -2,6 +2,8 @@ package io.github.thatkawaiisam.configs;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,14 +11,12 @@ import java.io.File;
 import java.io.IOException;
 
 @Getter @Setter
-public class BukkitConfigHelper {
+public class BukkitConfigHelper extends YamlConfiguration {
 
     /* File */
     private File file;
     /* Strings */
     private String name, directory;
-    /* Configuration */
-    private YamlConfiguration configuration;
 
     /**
      * Bukkit Configuration Class
@@ -35,8 +35,18 @@ public class BukkitConfigHelper {
         if (!file.exists()) {
             plugin.saveResource(name + ".yml", false);
         }
+        load();
+        save();
+        // OLD YamlConfiguration.loadConfiguration(this.getFile());
+    }
+
+    public void load() {
         /* Load the files configuration */
-        this.configuration = YamlConfiguration.loadConfiguration(this.getFile());
+        try {
+            this.load(this.file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -44,9 +54,13 @@ public class BukkitConfigHelper {
      */
     public void save() {
         try {
-            configuration.save(file);
+            this.save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Configuration getConfiguration() {
+        return this;
     }
 }

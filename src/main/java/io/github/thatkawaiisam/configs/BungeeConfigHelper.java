@@ -56,7 +56,10 @@ public class BungeeConfigHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        save();
     }
+
+
 
     /**
      * Saves the configuration file from memory to storage
