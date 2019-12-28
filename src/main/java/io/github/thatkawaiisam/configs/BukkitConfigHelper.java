@@ -35,9 +35,6 @@ public class BukkitConfigHelper extends YamlConfiguration {
         if (!file.exists()) {
             plugin.saveResource(name + ".yml", false);
         }
-        load();
-        save();
-        // OLD YamlConfiguration.loadConfiguration(this.getFile());
     }
 
     public void load() {

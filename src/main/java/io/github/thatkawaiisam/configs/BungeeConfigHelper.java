@@ -36,6 +36,9 @@ public class BungeeConfigHelper {
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdir();
         }
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
         /* If file does not already exist, then grab it internally from the resources folder */
         if (!file.exists()) {
             try {
@@ -51,14 +54,16 @@ public class BungeeConfigHelper {
             }
 
         }
+    }
+
+    public void load() {
+        /* Loads the files configuration */
         try {
             this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        save();
     }
-
 
 
     /**
