@@ -8,49 +8,49 @@ import java.io.IOException;
 
 public class BukkitConfiguration extends BaseConfiguration {
 
-    private JavaPlugin plugin;
-    private YamlConfiguration base;
+	private JavaPlugin plugin;
+	private YamlConfiguration base;
 
-    /**
-     * Bukkit Configuration.
-     *
-     * @param plugin instance.
-     * @param name of file.
-     * @param directory of file.
-     */
-    public BukkitConfiguration(JavaPlugin plugin, String name, String directory) {
-        super(name, directory);
-        this.plugin = plugin;
-        this.base = new YamlConfiguration();
-    }
+	/**
+	 * Bukkit Configuration.
+	 *
+	 * @param plugin    Plugin instance.
+	 * @param name      Name of file.
+	 * @param directory Directory of file.
+	 */
+	public BukkitConfiguration(JavaPlugin plugin, String name, String directory) {
+		super(name, directory);
+		this.plugin = plugin;
+		this.base = new YamlConfiguration();
+	}
 
-    @Override
-    void onCreate() {
-        if (!getFile().exists()) {
-            plugin.saveResource(getName() + ".yml", false);
-        }
-    }
+	@Override
+	void onCreate() {
+		if (!getFile().exists()) {
+			plugin.saveResource(getName() + ".yml", false);
+		}
+	}
 
-    @Override
-    public void load() {
-        try {
-            base.load(this.getFile());
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void load() {
+		try {
+			base.load(this.getFile());
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public void save() {
-        try {
-            base.save(getFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void save() {
+		try {
+			base.save(getFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public YamlConfiguration getImplementation() {
-        return base;
-    }
+	public YamlConfiguration getImplementation() {
+		return base;
+	}
 
 }
