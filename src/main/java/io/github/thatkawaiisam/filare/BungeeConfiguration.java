@@ -71,4 +71,8 @@ public class BungeeConfiguration extends BaseConfiguration {
             e.printStackTrace();
         }
     }
+
+    public Configuration getImplementation() {
+        return base;
+    }
 }

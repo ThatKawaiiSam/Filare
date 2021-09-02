@@ -48,4 +48,9 @@ public class BukkitConfiguration extends BaseConfiguration {
             e.printStackTrace();
         }
     }
+
+    public YamlConfiguration getImplementation() {
+        return base;
+    }
+
 }
