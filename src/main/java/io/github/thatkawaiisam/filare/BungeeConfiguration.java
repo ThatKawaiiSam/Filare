@@ -35,19 +35,17 @@ public class BungeeConfiguration extends BaseConfiguration {
 		plugin.getDataFolder().mkdir();
 		getFile().getParentFile().mkdirs();
 
-		// If file does not already exist, then grab it internally from the resources
-		// folder
-		if (!getFile().exists()) {
-			try {
-				getFile().createNewFile();
+		try {
+			// If the file doesn't exist, a new one will be created and,
+			// createNewFile() will return true
+			if (getFile().createNewFile()) {
 				try (InputStream is = plugin.getResourceAsStream(getName() + ".yml");
 						OutputStream os = new FileOutputStream(getFile())) {
 					ByteStreams.copy(is, os);
 				}
-			} catch (IOException e) {
-				throw new RuntimeException("Unable to create configuration file", e);
 			}
-
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to create configuration file", e);
 		}
 	}
 
