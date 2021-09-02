@@ -26,9 +26,9 @@ public class BukkitConfiguration extends BaseConfiguration {
 
 	@Override
 	void onCreate() {
-		if (!getFile().exists()) {
-			plugin.saveResource(getName() + ".yml", false);
-		}
+		// Don't need to check if the file exists as the false parameter
+		// already ensures we do not replace any existing file
+		plugin.saveResource(getName() + ".yml", false);
 	}
 
 	@Override
