@@ -30,12 +30,10 @@ public class BungeeConfiguration extends BaseConfiguration {
 
     @Override
     void onCreate() {
-        if (!plugin.getDataFolder().exists()) {
-            plugin.getDataFolder().mkdir();
-        }
-        if (!getFile().getParentFile().exists()) {
-            getFile().getParentFile().mkdirs();
-        }
+    	
+    	// Create any parent directories
+        plugin.getDataFolder().mkdir();
+        getFile().getParentFile().mkdirs();
 
         // If file does not already exist, then grab it internally from the resources folder
         if (!getFile().exists()) {
