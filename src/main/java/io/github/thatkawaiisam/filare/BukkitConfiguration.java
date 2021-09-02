@@ -34,7 +34,7 @@ public class BukkitConfiguration extends BaseConfiguration {
 	@Override
 	public void load() {
 		try {
-			base.load(this.getFile());
+			base.load(getFile());
 		} catch (IOException | InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
