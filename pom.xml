@@ -90,4 +90,12 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub ThatKawaiiSam Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/ThatKawaiiSam/Filare</url>
+        </repository>
+    </distributionManagement>
+
 </project>
