@@ -22,19 +22,22 @@ public class BukkitConfiguration extends BaseConfiguration {
         super(name, directory);
         this.plugin = plugin;
         this.base = new YamlConfiguration();
+
+        // Trigger on create.
+        this.onCreate();
     }
 
     @Override
     void onCreate() {
         if (!getFile().exists()) {
-            plugin.saveResource(getName() + ".yml", false);
+            this.plugin.saveResource(this.getName() + ".yml", false);
         }
     }
 
     @Override
     public void load() {
         try {
-            base.load(this.getFile());
+            this.base.load(this.getFile());
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -43,14 +46,14 @@ public class BukkitConfiguration extends BaseConfiguration {
     @Override
     public void save() {
         try {
-            base.save(getFile());
+            this.base.save(this.getFile());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public YamlConfiguration getImplementation() {
-        return base;
+        return this.base;
     }
 
 }

@@ -22,9 +22,6 @@ public abstract class BaseConfiguration {
 
         // Setup File.
         this.file = new File(this.directory, this.name + ".yml");
-
-        // Trigger on create
-        this.onCreate();
     }
 
     /**

@@ -26,24 +26,27 @@ public class BungeeConfiguration extends BaseConfiguration {
     public BungeeConfiguration(Plugin plugin, String name, String directory) {
         super(name, directory);
         this.plugin = plugin;
+
+        // Trigger on create.
+        this.onCreate();
     }
 
     @Override
     void onCreate() {
-        if (!plugin.getDataFolder().exists()) {
-            plugin.getDataFolder().mkdir();
+        if (!this.plugin.getDataFolder().exists()) {
+            this.plugin.getDataFolder().mkdir();
         }
-        if (!getFile().getParentFile().exists()) {
-            getFile().getParentFile().mkdirs();
+        if (!this.getFile().getParentFile().exists()) {
+            this.getFile().getParentFile().mkdirs();
         }
 
         // If file does not already exist, then grab it internally from the resources folder
-        if (!getFile().exists()) {
+        if (!this.getFile().exists()) {
             try {
-                getFile().createNewFile();
+                this.getFile().createNewFile();
                 try (
-                        InputStream is = plugin.getResourceAsStream(getName() + ".yml");
-                        OutputStream os = new FileOutputStream(getFile())
+                        InputStream is = this.plugin.getResourceAsStream(this.getName() + ".yml");
+                        OutputStream os = new FileOutputStream(this.getFile())
                 ) {
                     ByteStreams.copy(is, os);
                 }
@@ -57,7 +60,7 @@ public class BungeeConfiguration extends BaseConfiguration {
     @Override
     public void load() {
         try {
-            base = ConfigurationProvider.getProvider(YamlConfiguration.class).load(getFile());
+            this.base = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.getFile());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,13 +69,13 @@ public class BungeeConfiguration extends BaseConfiguration {
     @Override
     public void save() {
         try {
-            ConfigurationProvider.getProvider(YamlConfiguration.class).save(base, getFile());
+            ConfigurationProvider.getProvider(YamlConfiguration.class).save(this.base, this.getFile());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public Configuration getImplementation() {
-        return base;
+        return this.base;
     }
 }
