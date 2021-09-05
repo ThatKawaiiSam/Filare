@@ -70,4 +70,5 @@ public class BungeeConfiguration extends BaseConfiguration {
 	public Configuration getImplementation() {
 		return base;
 	}
+
 }
