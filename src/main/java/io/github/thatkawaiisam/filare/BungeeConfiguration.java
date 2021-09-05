@@ -13,69 +13,62 @@ import java.io.OutputStream;
 
 public class BungeeConfiguration extends BaseConfiguration {
 
-    private Plugin plugin;
-    private Configuration base;
+	private Plugin plugin;
+	private Configuration base;
 
-    /**
-     * Bungee Configuration.
-     *
-     * @param plugin instance.
-     * @param name of file.
-     * @param directory of file.
-     */
-    public BungeeConfiguration(Plugin plugin, String name, String directory) {
-        super(name, directory);
-        this.plugin = plugin;
+	/**
+	 * Bungee Configuration.
+	 *
+	 * @param plugin    Plugin instance.
+	 * @param name      Name of file.
+	 * @param directory Directory of file.
+	 */
+	public BungeeConfiguration(Plugin plugin, String name, String directory) {
+		super(name, directory);
+		this.plugin = plugin;
+	}
 
-        // Trigger on create.
-        this.onCreate();
-    }
+	@Override
+	void onCreate() {
 
-    @Override
-    void onCreate() {
-        if (!this.plugin.getDataFolder().exists()) {
-            this.plugin.getDataFolder().mkdir();
-        }
-        if (!this.getFile().getParentFile().exists()) {
-            this.getFile().getParentFile().mkdirs();
-        }
+		// Create any parent directories
+		plugin.getDataFolder().mkdir();
+		getFile().getParentFile().mkdirs();
 
-        // If file does not already exist, then grab it internally from the resources folder
-        if (!this.getFile().exists()) {
-            try {
-                this.getFile().createNewFile();
-                try (
-                        InputStream is = this.plugin.getResourceAsStream(this.getName() + ".yml");
-                        OutputStream os = new FileOutputStream(this.getFile())
-                ) {
-                    ByteStreams.copy(is, os);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException("Unable to create configuration file", e);
-            }
+		try {
+			// If the file doesn't exist, a new one will be created and,
+			// createNewFile() will return true
+			if (getFile().createNewFile()) {
+				try (InputStream is = plugin.getResourceAsStream(getName() + ".yml");
+						OutputStream os = new FileOutputStream(getFile())) {
+					ByteStreams.copy(is, os);
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to create configuration file", e);
+		}
+	}
 
-        }
-    }
+	@Override
+	public void load() {
+		try {
+			base = ConfigurationProvider.getProvider(YamlConfiguration.class).load(getFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public void load() {
-        try {
-            this.base = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.getFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void save() {
+		try {
+			ConfigurationProvider.getProvider(YamlConfiguration.class).save(base, getFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public void save() {
-        try {
-            ConfigurationProvider.getProvider(YamlConfiguration.class).save(this.base, this.getFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	public Configuration getImplementation() {
+		return base;
+	}
 
-    public Configuration getImplementation() {
-        return this.base;
-    }
 }
